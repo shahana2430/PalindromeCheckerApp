@@ -1,6 +1,17 @@
-import java.util.*;
+import java.util.Scanner;
 
-public class UseCase7PalindromeCheckerApp {
+public class UseCase8PalindromeCheckerApp {
+
+    // ✅ Node class for Linked List
+    static class Node {
+        char data;
+        Node next;
+
+        Node(char data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -10,25 +21,52 @@ public class UseCase7PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String text = sc.nextLine();
 
-        // ✅ Create Deque
-        Deque<Character> deque = new LinkedList<>();
+        // ✅ Convert string to linked list
+        Node head = null, tail = null;
 
-        // ✅ Insert characters into deque
-        for (int i = 0; i < text.length(); i++) {
-            deque.addLast(text.charAt(i));
+        for (char ch : text.toCharArray()) {
+            Node newNode = new Node(ch);
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
         }
 
-        // ✅ Compare front and rear
+        // ✅ Find middle using fast & slow pointer
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // ✅ Reverse second half
+        Node prev = null;
+        Node curr = slow;
+
+        while (curr != null) {
+            Node next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        // ✅ Compare both halves
+        Node first = head;
+        Node second = prev;
+
         boolean isPalindrome = true;
 
-        while (deque.size() > 1) {
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
-
-            if (front != rear) {
+        while (second != null) {
+            if (first.data != second.data) {
                 isPalindrome = false;
                 break;
             }
+            first = first.next;
+            second = second.next;
         }
 
         // ✅ Result
@@ -41,5 +79,4 @@ public class UseCase7PalindromeCheckerApp {
         sc.close();
     }
 }
-
 
