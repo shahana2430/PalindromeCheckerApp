@@ -1,41 +1,94 @@
-import java.util.Scanner;
+import java.util.*;
 
-// ✅ Service class (Encapsulation)
-class PalindromeChecker {
+// ✅ Strategy Interface
+interface PalindromeStrategy {
+    boolean check(String text);
+}
 
-    // ✅ Method to check palindrome
-    public boolean checkPalindrome(String text) {
+// ✅ Stack Strategy
+class StackStrategy implements PalindromeStrategy {
 
-        int left = 0;
-        int right = text.length() - 1;
+    public boolean check(String text) {
 
-        while (left < right) {
-            if (text.charAt(left) != text.charAt(right)) {
+        Stack<Character> stack = new Stack<>();
+
+        // Push characters
+        for (char ch : text.toCharArray()) {
+            stack.push(ch);
+        }
+
+        // Compare
+        for (int i = 0; i < text.length(); i++) {
+            if (text.charAt(i) != stack.pop()) {
                 return false;
             }
-            left++;
-            right--;
         }
 
         return true;
     }
 }
 
-// ✅ Main application class
-public class UseCase11PalindromeCheckerApp {
+// ✅ Deque Strategy
+class DequeStrategy implements PalindromeStrategy {
+
+    public boolean check(String text) {
+
+        Deque<Character> deque = new LinkedList<>();
+
+        for (char ch : text.toCharArray()) {
+            deque.addLast(ch);
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+// ✅ Context Class
+class PalindromeService {
+
+    private PalindromeStrategy strategy;
+
+    public PalindromeService(PalindromeStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public boolean checkPalindrome(String text) {
+        return strategy.check(text);
+    }
+}
+
+// ✅ Main Class
+public class UseCase12PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        // ✅ Input
         System.out.print("Enter a string: ");
         String text = sc.nextLine();
 
-        // ✅ Use service class
-        PalindromeChecker checker = new PalindromeChecker();
+        // ✅ Choose strategy dynamically
+        PalindromeStrategy strategy;
 
-        boolean result = checker.checkPalindrome(text);
+        System.out.print("Choose method (1-Stack, 2-Deque): ");
+        int choice = sc.nextInt();
+
+        if (choice == 1) {
+            strategy = new StackStrategy();
+        } else {
+            strategy = new DequeStrategy();
+        }
+
+        // ✅ Inject strategy
+        PalindromeService service = new PalindromeService(strategy);
+
+        boolean result = service.checkPalindrome(text);
 
         // ✅ Output
         if (result) {
@@ -47,7 +100,6 @@ public class UseCase11PalindromeCheckerApp {
         sc.close();
     }
 }
-
-
-
-
+        git add .
+        git commit -m "UC12:Hardcoded palindrome "
+        git push origin feature/UC12
