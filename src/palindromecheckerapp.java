@@ -1,14 +1,22 @@
-public class palindromecheckerapp {
+public class UseCase2PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        // ✅ Welcome Message
-        System.out.println("=== Palindrome Checker App ===");
+        // ✅ Hardcoded string
+        String text = "madam";
 
-        // ✅ Application Details
-        System.out.println("Version: 1.0");
-        System.out.println("Author: Student");
+        // ✅ Reverse the string
+        String reversed = "";
 
-        // Program continues...
+        for (int i = text.length() - 1; i >= 0; i--) {
+            reversed = reversed + text.charAt(i);
+        }
+
+        // ✅ Check palindrome using if-else
+        if (text.equals(reversed)) {
+            System.out.println(text + " is a Palindrome");
+        } else {
+            System.out.println(text + " is NOT a Palindrome");
+        }
     }
 }
