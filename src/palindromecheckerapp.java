@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class UseCase6PalindromeCheckerApp {
+public class UseCase7PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
@@ -10,22 +10,22 @@ public class UseCase6PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String text = sc.nextLine();
 
-        // ✅ Create Stack and Queue
-        Stack<Character> stack = new Stack<>();
-        Queue<Character> queue = new LinkedList<>();
+        // ✅ Create Deque
+        Deque<Character> deque = new LinkedList<>();
 
-        // ✅ Push & Enqueue characters
+        // ✅ Insert characters into deque
         for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
-            stack.push(ch);      // LIFO
-            queue.add(ch);       // FIFO
+            deque.addLast(text.charAt(i));
         }
 
-        // ✅ Compare dequeue vs pop
+        // ✅ Compare front and rear
         boolean isPalindrome = true;
 
-        while (!stack.isEmpty()) {
-            if (stack.pop() != queue.remove()) {
+        while (deque.size() > 1) {
+            char front = deque.removeFirst();
+            char rear = deque.removeLast();
+
+            if (front != rear) {
                 isPalindrome = false;
                 break;
             }
@@ -41,6 +41,5 @@ public class UseCase6PalindromeCheckerApp {
         sc.close();
     }
 }
-
 
 
