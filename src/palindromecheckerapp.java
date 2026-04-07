@@ -1,23 +1,6 @@
 import java.util.Scanner;
 
-public class UseCase9PalindromeCheckerApp {
-
-    // ✅ Recursive method
-    public static boolean isPalindrome(String str, int left, int right) {
-
-        // ✅ Base condition
-        if (left >= right) {
-            return true;
-        }
-
-        // ❌ If mismatch
-        if (str.charAt(left) != str.charAt(right)) {
-            return false;
-        }
-
-        // 🔁 Recursive call
-        return isPalindrome(str, left + 1, right - 1);
-    }
+public class UseCase10PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
@@ -27,16 +10,32 @@ public class UseCase9PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String text = sc.nextLine();
 
-        // ✅ Call recursive function
-        boolean result = isPalindrome(text, 0, text.length() - 1);
+        // ✅ Normalize string (remove spaces & convert to lowercase)
+        String normalized = text.replaceAll("\\s+", "").toLowerCase();
+
+        // ✅ Check palindrome using two-pointer
+        int left = 0;
+        int right = normalized.length() - 1;
+
+        boolean isPalindrome = true;
+
+        while (left < right) {
+            if (normalized.charAt(left) != normalized.charAt(right)) {
+                isPalindrome = false;
+                break;
+            }
+            left++;
+            right--;
+        }
 
         // ✅ Output
-        if (result) {
-            System.out.println(text + " is a Palindrome");
+        if (isPalindrome) {
+            System.out.println("\"" + text + "\" is a Palindrome (ignoring case & spaces)");
         } else {
-            System.out.println(text + " is NOT a Palindrome");
+            System.out.println("\"" + text + "\" is NOT a Palindrome");
         }
 
         sc.close();
     }
 }
+
