@@ -1,70 +1,45 @@
 import java.util.*;
 
-// ✅ Strategy Interface
-interface PalindromeStrategy {
-    boolean check(String text);
-}
+public class UseCase13PalindromeCheckerApp {
 
-// ✅ Stack Strategy
-class StackStrategy implements PalindromeStrategy {
+    // ✅ Method 1: String Reverse
+    public static boolean checkReverse(String text) {
+        String reversed = "";
+        for (int i = text.length() - 1; i >= 0; i--) {
+            reversed += text.charAt(i);
+        }
+        return text.equals(reversed);
+    }
 
-    public boolean check(String text) {
+    // ✅ Method 2: Two-pointer
+    public static boolean checkTwoPointer(String text) {
+        int left = 0, right = text.length() - 1;
 
+        while (left < right) {
+            if (text.charAt(left) != text.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+
+    // ✅ Method 3: Stack
+    public static boolean checkStack(String text) {
         Stack<Character> stack = new Stack<>();
 
-        // Push characters
         for (char ch : text.toCharArray()) {
             stack.push(ch);
         }
 
-        // Compare
         for (int i = 0; i < text.length(); i++) {
             if (text.charAt(i) != stack.pop()) {
                 return false;
             }
         }
-
         return true;
     }
-}
-
-// ✅ Deque Strategy
-class DequeStrategy implements PalindromeStrategy {
-
-    public boolean check(String text) {
-
-        Deque<Character> deque = new LinkedList<>();
-
-        for (char ch : text.toCharArray()) {
-            deque.addLast(ch);
-        }
-
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-}
-
-// ✅ Context Class
-class PalindromeService {
-
-    private PalindromeStrategy strategy;
-
-    public PalindromeService(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean checkPalindrome(String text) {
-        return strategy.check(text);
-    }
-}
-
-// ✅ Main Class
-public class UseCase12PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
@@ -73,33 +48,29 @@ public class UseCase12PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String text = sc.nextLine();
 
-        // ✅ Choose strategy dynamically
-        PalindromeStrategy strategy;
+        // 🔵 Reverse Method Timing
+        long start1 = System.nanoTime();
+        boolean r1 = checkReverse(text);
+        long end1 = System.nanoTime();
 
-        System.out.print("Choose method (1-Stack, 2-Deque): ");
-        int choice = sc.nextInt();
+        // 🟢 Two Pointer Timing
+        long start2 = System.nanoTime();
+        boolean r2 = checkTwoPointer(text);
+        long end2 = System.nanoTime();
 
-        if (choice == 1) {
-            strategy = new StackStrategy();
-        } else {
-            strategy = new DequeStrategy();
-        }
+        // 🟡 Stack Method Timing
+        long start3 = System.nanoTime();
+        boolean r3 = checkStack(text);
+        long end3 = System.nanoTime();
 
-        // ✅ Inject strategy
-        PalindromeService service = new PalindromeService(strategy);
-
-        boolean result = service.checkPalindrome(text);
-
-        // ✅ Output
-        if (result) {
-            System.out.println(text + " is a Palindrome");
-        } else {
-            System.out.println(text + " is NOT a Palindrome");
-        }
+        // ✅ Display results
+        System.out.println("\nResults:");
+        System.out.println("Reverse Method: " + r1 + " | Time: " + (end1 - start1) + " ns");
+        System.out.println("Two Pointer: " + r2 + " | Time: " + (end2 - start2) + " ns");
+        System.out.println("Stack Method: " + r3 + " | Time: " + (end3 - start3) + " ns");
 
         sc.close();
     }
 }
-        git add .
-        git commit -m "UC12:Hardcoded palindrome "
-        git push origin feature/UC12
+
+
