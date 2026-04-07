@@ -1,33 +1,38 @@
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
-public class UseCase5PalindromeCheckerApp {
+public class UseCase6PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        // ✅ Take input
+        // ✅ Input
         System.out.print("Enter a string: ");
         String text = sc.nextLine();
 
-        // ✅ Create stack
+        // ✅ Create Stack and Queue
         Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
 
-        // ✅ Push characters into stack
+        // ✅ Push & Enqueue characters
         for (int i = 0; i < text.length(); i++) {
-            stack.push(text.charAt(i));
+            char ch = text.charAt(i);
+            stack.push(ch);      // LIFO
+            queue.add(ch);       // FIFO
         }
 
-        // ✅ Pop and build reversed string
-        String reversed = "";
+        // ✅ Compare dequeue vs pop
+        boolean isPalindrome = true;
 
         while (!stack.isEmpty()) {
-            reversed = reversed + stack.pop();
+            if (stack.pop() != queue.remove()) {
+                isPalindrome = false;
+                break;
+            }
         }
 
-        // ✅ Compare original and reversed
-        if (text.equals(reversed)) {
+        // ✅ Result
+        if (isPalindrome) {
             System.out.println(text + " is a Palindrome");
         } else {
             System.out.println(text + " is NOT a Palindrome");
@@ -36,5 +41,6 @@ public class UseCase5PalindromeCheckerApp {
         sc.close();
     }
 }
+
 
 
