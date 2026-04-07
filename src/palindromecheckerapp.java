@@ -1,6 +1,28 @@
 import java.util.Scanner;
 
-public class UseCase10PalindromeCheckerApp {
+// ✅ Service class (Encapsulation)
+class PalindromeChecker {
+
+    // ✅ Method to check palindrome
+    public boolean checkPalindrome(String text) {
+
+        int left = 0;
+        int right = text.length() - 1;
+
+        while (left < right) {
+            if (text.charAt(left) != text.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+}
+
+// ✅ Main application class
+public class UseCase11PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
@@ -10,32 +32,18 @@ public class UseCase10PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String text = sc.nextLine();
 
-        // ✅ Normalize string (remove spaces & convert to lowercase)
-        String normalized = text.replaceAll("\\s+", "").toLowerCase();
+        // ✅ Use service class
+        PalindromeChecker checker = new PalindromeChecker();
 
-        // ✅ Check palindrome using two-pointer
-        int left = 0;
-        int right = normalized.length() - 1;
-
-        boolean isPalindrome = true;
-
-        while (left < right) {
-            if (normalized.charAt(left) != normalized.charAt(right)) {
-                isPalindrome = false;
-                break;
-            }
-            left++;
-            right--;
-        }
+        boolean result = checker.checkPalindrome(text);
 
         // ✅ Output
-        if (isPalindrome) {
-            System.out.println("\"" + text + "\" is a Palindrome (ignoring case & spaces)");
+        if (result) {
+            System.out.println(text + " is a Palindrome");
         } else {
-            System.out.println("\"" + text + "\" is NOT a Palindrome");
+            System.out.println(text + " is NOT a Palindrome");
         }
 
         sc.close();
     }
 }
-
